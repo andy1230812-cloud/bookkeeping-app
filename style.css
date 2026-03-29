@@ -1,0 +1,396 @@
+/* === 基礎設定 === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #4A90D9;
+  --expense: #E74C3C;
+  --income: #27AE60;
+  --transfer: #3498DB;
+  --withdraw: #E67E22;
+  --deposit: #1ABC9C;
+  --exchange: #9B59B6;
+  --bg: #F5F5F5;
+  --card: #FFFFFF;
+  --text: #333333;
+  --text-light: #888888;
+  --border: #E0E0E0;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* === 畫面切換 === */
+.screen {
+  display: none;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: calc(16px + var(--safe-top)) 16px calc(16px + var(--safe-bottom));
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* === 畫面標頭 === */
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0 16px;
+}
+
+.screen-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.back-button:active {
+  background-color: rgba(74, 144, 217, 0.1);
+}
+
+/* === 首頁 === */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 24px;
+}
+
+.app-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.mic-button {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  background: var(--card);
+  color: var(--primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.2);
+}
+
+.mic-button:active {
+  transform: scale(0.95);
+  background-color: var(--primary);
+  color: white;
+}
+
+.mic-button.listening {
+  animation: pulse 1.5s infinite;
+  background-color: var(--primary);
+  color: white;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 144, 217, 0.5); }
+  70% { box-shadow: 0 0 0 20px rgba(74, 144, 217, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 144, 217, 0); }
+}
+
+.mic-hint {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* === 通用按鈕 === */
+.primary-button {
+  width: 100%;
+  max-width: 320px;
+  padding: 16px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.primary-button:active {
+  opacity: 0.8;
+}
+
+.primary-button:disabled {
+  background-color: #CCC;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-light);
+  background: none;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.secondary-button:active {
+  background-color: var(--bg);
+}
+
+/* === 類型選擇 === */
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 8px 0;
+  flex: 1;
+  align-content: center;
+}
+
+.type-button {
+  padding: 28px 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.type-button:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.type-expense { background-color: var(--expense); }
+.type-income { background-color: var(--income); }
+.type-transfer { background-color: var(--transfer); }
+.type-withdraw { background-color: var(--withdraw); }
+.type-deposit { background-color: var(--deposit); }
+.type-exchange { background-color: var(--exchange); }
+
+/* === 金額輸入 === */
+.amount-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 32px 16px;
+  margin: 8px 0;
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.currency-symbol {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+#amount-value {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text);
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 16px 0;
+  flex: 1;
+  align-content: center;
+}
+
+.key-button {
+  padding: 18px;
+  font-size: 24px;
+  font-weight: 500;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+}
+
+.key-button:active {
+  background-color: #E8E8E8;
+}
+
+.key-delete {
+  color: var(--expense);
+}
+
+#screen-amount .primary-button {
+  margin: 8px auto 0;
+}
+
+/* === 類別選擇 === */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.category-button {
+  padding: 16px 8px;
+  font-size: 15px;
+  font-weight: 500;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  word-break: keep-all;
+}
+
+.category-button:active {
+  transform: scale(0.96);
+}
+
+.category-button.selected {
+  border-color: var(--primary);
+  background-color: rgba(74, 144, 217, 0.1);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* === 確認畫面 === */
+.confirm-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 8px 0 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.confirm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.confirm-row + .confirm-row {
+  border-top: 1px solid var(--border);
+}
+
+.confirm-label {
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+.confirm-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+#screen-confirm .primary-button,
+#screen-confirm .secondary-button {
+  display: block;
+  margin: 0 auto;
+}
+
+.submit-button {
+  background-color: var(--income);
+}
+
+/* === 成功覆蓋層 === */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.success-content {
+  text-align: center;
+  animation: fadeInUp 0.4s ease;
+}
+
+.success-content p {
+  font-size: 24px;
+  font-weight: 600;
+  color: #4CAF50;
+  margin-top: 16px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Toast 訊息 === */
+.toast {
+  position: fixed;
+  bottom: calc(40px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  z-index: 200;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+
+/* === 隱藏 === */
+.hidden {
+  display: none !important;
+}
